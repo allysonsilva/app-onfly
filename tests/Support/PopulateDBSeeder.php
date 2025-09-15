@@ -22,9 +22,6 @@ class PopulateDBSeeder extends Seeder
      */
     public function run()
     {
-        TravelRequest::query()->forceDelete();
-        User::query()->forceDelete();
-
         $user0 = User::factory()
             ->has(TravelRequest::factory()->count(10))
             ->create(['email' => TestCase::EMAIL_USER_0]);

@@ -21,7 +21,7 @@ describe('travel-requests:store', function () {
     });
 
     it('travel-requests:store - should response with error - 422', function () {
-        Sanctum::actingAs($user = $this->userAuth(), ['user']);
+        Sanctum::actingAs($this->userAuth(), ['user']);
 
         postJson($this->httpUri)
             ->assertUnprocessable()

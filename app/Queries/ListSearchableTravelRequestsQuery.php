@@ -24,7 +24,7 @@ final class ListSearchableTravelRequestsQuery implements QueryInterface
 
     public function paginate(SearchData $data): Paginator
     {
-        return $this->builder($data)->simplePaginate(perPage: $data->perPage);
+        return $this->builder($data)->simplePaginate(perPage: $data->perPage)->withQueryString();
     }
 
     /**

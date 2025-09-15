@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 // /healthz?view&fresh
 // /healthz?exception&fresh
 // /healthz?json&fresh
-Route::get('healthz', HealthCheckController::class)->name('health-check');
+Route::prefix('v1')->get('healthz', HealthCheckController::class)->name('health-check');
 
 Route::prefix('v1')
     ->name('v1.user.')
