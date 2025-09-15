@@ -62,6 +62,11 @@ jobs:
           tools: composer:v2
           coverage: pcov
 
+      - name: Start Typesense
+        uses: jirevwe/typesense-github-action@v1.0.1
+        with:
+          typesense-api-key: some-api-key
+
       - name: Install Composer Dependencies
         run: |
             composer install --no-interaction --no-scripts --no-progress --prefer-dist --ansi --optimize-autoloader
