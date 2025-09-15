@@ -26,6 +26,7 @@ use SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\UseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Operators\RequireOnlyStandaloneIncrementAndDecrementOperatorsSniff;
+use SlevomatCodingStandard\Sniffs\PHP\UselessParenthesesSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
@@ -111,6 +112,7 @@ return [
         RequireOnlyStandaloneIncrementAndDecrementOperatorsSniff::class,
         AssignmentInConditionSniff::class,
         SingleImportPerStatementFixer::class,
+        UselessParenthesesSniff::class,
     ],
 
     'config' => [
@@ -148,6 +150,7 @@ return [
                 'app/Rules/DateFilterExpression.php',
                 'app/Support/Database/WheresCollection.php',
                 'app/Http/Middleware/IdempotencyMiddleware.php',
+                'app/Models/Concerns/HandlesLoggedUser.php',
             ],
         ],
 

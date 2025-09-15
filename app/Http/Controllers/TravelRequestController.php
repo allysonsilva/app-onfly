@@ -23,7 +23,7 @@ class TravelRequestController extends BaseController
      */
     public function index(IndexTravelRequestRequest $request, ListSearchableTravelRequestsQuery $query)
     {
-        return $query->paginate($request());
+        return TravelRequestResource::collection($query->paginate($request()));
     }
 
     /**

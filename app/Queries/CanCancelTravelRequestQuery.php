@@ -17,22 +17,24 @@ final class CanCancelTravelRequestQuery implements QueryInterface
      * Execute the Query.
      *
      * @param \App\Models\TravelRequest $travelRequest
+     *
+     * @SuppressWarnings(PHPMD)
      */
     public function handle(TravelRequest $travelRequest): true
     {
         if ($travelRequest->status->isCanceled()) {
-            throw new TravelRequestAlreadyCancelled()->withContext([
+            (throw new TravelRequestAlreadyCancelled())->withContext([
                 'code' => $travelRequest->code,
             ]);
         }
 
-        // O cancelamento é permitido se a data da viagem for após (maior que) sete dias a partir de agora.
+        // O cancelamento é permitido se a data da viagem for antes do que 7 dias da partida da viagem
         $isPastCancellationDeadline = ! $travelRequest
             ->departure_date
             ->isAfter(now()->addDays(self::CANCEL_DEADLINE_DAYS));
 
         if ($travelRequest->status->isApproved() && $isPastCancellationDeadline) {
-            throw new TravelRequestNotCancellable()->withContext([
+            (throw new TravelRequestNotCancellable())->withContext([
                 'code' => $travelRequest->code,
             ]);
         }

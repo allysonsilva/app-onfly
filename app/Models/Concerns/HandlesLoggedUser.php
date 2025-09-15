@@ -54,7 +54,7 @@ trait HandlesLoggedUser
         self::addGlobalScopeWhereLoggedUser();
 
         static::creating(function (self $entity) {
-            $entity->user_id = auth()->id();
+            $entity->user_id = auth()->id() ?: $entity->user_id;
         });
     }
 }

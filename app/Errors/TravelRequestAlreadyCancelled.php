@@ -15,7 +15,7 @@ class TravelRequestAlreadyCancelled extends ErrorDetail
             title: __('errors.travel_request_already_cancelled.title'),
             detail: __('errors.travel_request_already_cancelled.detail'),
             errorCode: 'travel-request-already-cancelled',
-            httpStatus: HttpErrorStatus::BAD_REQUEST,
+            httpStatus: HttpErrorStatus::FORBIDDEN,
         );
     }
 }

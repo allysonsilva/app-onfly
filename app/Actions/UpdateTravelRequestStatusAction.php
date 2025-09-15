@@ -23,7 +23,7 @@ class UpdateTravelRequestStatusAction extends LoggedUserAction
     public function handle(TravelRequest $travelRequest, TravelRequestStatus $newStatus): TravelRequest
     {
         if ($travelRequest->status === $newStatus) {
-            throw new TravelRequestAlreadyInStatus()->withContext([
+            (throw new TravelRequestAlreadyInStatus())->withContext([
                 'status' => $newStatus->value,
                 'id' => $travelRequest->getKey(),
                 'code' => $travelRequest->code,

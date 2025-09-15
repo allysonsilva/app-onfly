@@ -45,6 +45,31 @@
         }
     },
     "scripts": {
+        "populate-db": [
+            "php artisan config:clear --env=testing",
+            "php artisan config:cache --env=testing",
+            "php artisan db:wipe --force --env=testing",
+            "php artisan migrate:install --env=testing",
+            "php artisan migrate --env=testing",
+            "php artisan db:seed --class=\"\\\\Tests\\\\Support\\\\PopulateDBSeeder\" --env=testing"
+        ],
+        "tests": [
+            "php artisan optimize --env=testing @no_additional_args",
+            "php artisan test --env=testing --ansi @additional_args --exclude-group migration",
+            "php artisan optimize:clear --env=testing @no_additional_args"
+        ],
+        "tests-ci": [
+            "php artisan test --env=testing --group=migration @no_additional_args",
+            "@populate-db @no_additional_args",
+            "@tests --compact --coverage --min=80"
+        ],
+        "tests-parallel": [
+            "php artisan optimize:clear --env=testing @no_additional_args",
+            "php artisan test --env=testing @additional_args --parallel --exclude-group migration,arch"
+        ],
+        "tests-only": [
+            "php artisan test --env=testing --ansi --exclude-group=migration --exclude-group=arch"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

@@ -1,0 +1,31 @@
+name: Code Quality Analysis
+
+on:
+  workflow_call:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+    phpmd:
+      name: PHP Mess Detector
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout Code
+          uses: actions/checkout@v4
+          with:
+            ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
+            fetch-depth: 0  # a full history is required for pull request analysis
+
+        - name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: ${{ matrix.php }}
+            coverage: none
+            tools: phpmd
+
+        - name: Run PHP Mess Detector
+          run: phpmd app github phpmd.xml -v

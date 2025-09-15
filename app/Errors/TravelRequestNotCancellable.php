@@ -15,7 +15,7 @@ class TravelRequestNotCancellable extends ErrorDetail
             title: __('errors.travel_request_not_cancellable.title'),
             detail: __('errors.travel_request_not_cancellable.detail'),
             errorCode: 'travel-request-not-cancellable',
-            httpStatus: HttpErrorStatus::BAD_REQUEST,
+            httpStatus: HttpErrorStatus::FORBIDDEN,
         );
     }
 }

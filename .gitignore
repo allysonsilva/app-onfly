@@ -1,6 +1,7 @@
 *.log
 .DS_Store
 .env
+.env.testing
 .env.backup
 .env.production
 .phpactor.json
@@ -20,7 +21,7 @@
 /storage/pail
 /vendor
 /typesense-data
-/typesense-data
+/report
 Homestead.json
 Homestead.yaml
 Thumbs.db

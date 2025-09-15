@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Scout\Searchable;
 use App\Support\Outbox\OutboxMessageEvent;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Builder as ScoutBuilder;
 use Laravel\Scout\Scout;
 
@@ -42,6 +43,7 @@ class TravelRequest extends BaseModel implements OutboxAggregateContract
     use HandlesLoggedUser;
     use HasOutboxAggregate;
     use Searchable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
