@@ -1,0 +1,19 @@
+networks:
+    app_network:
+        external: true
+        name: ${APP_DOCKER_NETWORK}
+
+volumes:
+    typesense_data:
+
+services:
+
+    typesense:
+        image: typesense/typesense:29.0
+        hostname: typesense
+        container_name: ${COMPOSE_PROJECT_NAME}-typesense
+        volumes:
+            - typesense_data:/data
+        command: '--data-dir /data --api-key=SYcdIx86Ue27 --enable-cors'
+        networks:
+            app_network:

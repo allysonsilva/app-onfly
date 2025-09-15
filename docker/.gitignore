@@ -1,0 +1,9 @@
+*.md
+.docker
+!README*.md
+/.vscode
+**/*.env
+commands*
+typesense-data
+
+**/*/.DS_Store

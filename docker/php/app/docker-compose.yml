@@ -1,0 +1,44 @@
+# volumes:
+#     app_logs:
+
+networks:
+    app_network:
+        external: true
+        name: ${APP_DOCKER_NETWORK}
+
+services:
+
+    app:
+        image: ${APP_DOCKER_IMAGE:-app/app:1.0}
+        volumes:
+            # - ${DOCKER_PHP_PATH}/configs/conf.d/opcache.ini:/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+            # - ${DOCKER_PHP_PATH}/configs/php-local.ini:/usr/local/etc/php/php.ini
+            - ${DOCKER_PHP_PATH}/docker-entrypoint.sh:/entrypoint.sh:ro
+            # - ${APP_PATH}:/var/www/app:delegated
+            # - type: volume
+            #   source: app_logs
+            #   target: /usr/local/var/log
+        env_file:
+            - ${DOCKER_PHP_APP_PATH}/.env
+        restart: on-failure:3
+        # Graceful shutdown
+        stop_signal: SIGQUIT
+        stop_grace_period: 60s
+        networks:
+            app_network:
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "1m"
+                max-file: "5"
+                mode: "non-blocking"
+                tag: "logging-app"
+        healthcheck:
+            test: php artisan octane:status || exit 1
+            start_period: 30s
+            interval: 30s
+            timeout: 3s
+            retries: 3
+        cap_drop:
+            - NET_ADMIN
+            - SYS_ADMIN

@@ -1,0 +1,36 @@
+networks:
+    app_network:
+        external: true
+        name: ${APP_DOCKER_NETWORK}
+
+volumes:
+    queue_logs:
+
+services:
+
+    queue:
+        image: ${QUEUE_DOCKER_IMAGE}
+        hostname: queue
+        container_name: ${COMPOSE_PROJECT_NAME}-${CONTAINER_VERSION_SHELL:-${CONTAINER_VERSION}}-queue
+        env_file:
+            - ${DOCKER_PHP_APP_PATH}/.env
+            - ${DOCKER_PHP_QUEUE_PATH}/.env
+        volumes:
+            # - ${DOCKER_PHP_PATH}/configs/queue/supervisord.conf:/etc/supervisor/supervisord.conf:ro
+            # - ${DOCKER_PHP_PATH}/docker-entrypoint.sh:/entrypoint.sh:ro
+            # - ${APP_PATH}:/var/www/app:delegated
+            - type: volume
+              source: queue_logs
+              target: /usr/local/var/log
+        # Graceful shutdown
+        stop_signal: SIGQUIT
+        stop_grace_period: 120s
+        networks:
+            app_network:
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "1m"
+                max-file: "5"
+                mode: "non-blocking"
+                tag: "logging-queue"
