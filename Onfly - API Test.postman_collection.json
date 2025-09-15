@@ -33,6 +33,11 @@
 									"key": "destination",
 									"value": "São",
 									"disabled": true
+								},
+								{
+									"key": "departure_date",
+									"value": ">=2025-12-10",
+									"disabled": true
 								}
 							]
 						}
@@ -375,7 +380,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"destination\": \"São Paulo\",\n    \"departure_date\": \"2025-10-10\",\n    \"return_date\": \"2025-10-20\"\n}"
+							"raw": "{\n    \"destination\": \"São Paulo 3\",\n    \"departure_date\": \"2025-10-10\",\n    \"return_date\": \"2025-10-20\"\n}"
 						},
 						"url": {
 							"raw": "{{apiUrl}}/travel-requests",
@@ -1001,7 +1006,7 @@
 									"if (response.token) {",
 									"    // Salva em variável de ambiente chamada \"userToken\"",
 									"    // salva na variável de ambiente ativa.",
-									"    pm.environment.set(\"userToken\", response.token);",
+									"    // pm.environment.set(\"userToken\", response.token);",
 									"",
 									"    // salva só dentro da coleção onde a requisição está.",
 									"    pm.collectionVariables.set(\"userToken\", response.token);",
@@ -1297,8 +1302,6 @@
 									"let statusCode = pm.response.code;",
 									"",
 									"if (statusCode >= 200 && statusCode < 300) {",
-									"    pm.collectionVariables.set(\"userToken\", \"\");",
-									"    ",
 									"    // Se o status for 2xx, limpa a variável",
 									"    pm.collectionVariables.set(\"userToken\", \"\");",
 									"",
@@ -1645,193 +1648,192 @@
 							"body": "{\n    \"data\": {\n        \"id\": \"0199465b-d6a1-7125-a780-74b1907eb633\",\n        \"code\": \"TVR-SJHJVTTGQ29D7\",\n        \"requester\": {\n            \"name\": \"Nome usuário\",\n            \"email\": \"mail@mail.com\"\n        },\n        \"destination\": \"São Paulo\",\n        \"departure_date\": \"2025-10-10T00:00:00.000000Z\",\n        \"return_date\": \"2025-10-20T00:00:00.000000Z\",\n        \"status\": \"approved\"\n    }\n}"
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
 				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{apiUrl}}/healthz?fresh",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"healthz"
+					],
+					"query": [
+						{
+							"key": "fresh",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": [
 				{
-					"name": "Health Check",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{adminToken}}",
-									"type": "string"
+					"name": "Status already set - 400",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"approved\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
 							}
-						],
+						},
 						"url": {
-							"raw": "{{apiUrl}}/admin/healthz?fresh",
+							"raw": "{{apiUrl}}/admin/travel-requests/:code/status",
 							"host": [
 								"{{apiUrl}}"
 							],
 							"path": [
 								"admin",
-								"healthz"
+								"travel-requests",
+								":code",
+								"status"
 							],
-							"query": [
+							"variable": [
 								{
-									"key": "fresh",
-									"value": null
+									"key": "code",
+									"value": "TVR-SJDQKYDD73KXW"
 								}
 							]
 						}
 					},
-					"response": [
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": null,
+					"header": [
 						{
-							"name": "Status already set - 400",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"status\": \"approved\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{apiUrl}}/admin/travel-requests/:code/status",
-									"host": [
-										"{{apiUrl}}"
-									],
-									"path": [
-										"admin",
-										"travel-requests",
-										":code",
-										"status"
-									],
-									"variable": [
-										{
-											"key": "code",
-											"value": "TVR-SJDQKYDD73KXW"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": null,
-							"header": [
-								{
-									"key": "Host",
-									"value": "127.0.0.1:8035"
-								},
-								{
-									"key": "Connection",
-									"value": "close"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "PHP/8.4.12"
-								},
-								{
-									"key": "Cache-Control",
-									"value": "no-cache, private"
-								},
-								{
-									"key": "Date",
-									"value": "Thu, 11 Sep 2025 13:12:01 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/problem+json"
-								},
-								{
-									"key": "X-RateLimit-Limit",
-									"value": "10"
-								},
-								{
-									"key": "X-RateLimit-Remaining",
-									"value": "9"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"title\": \"Status already set\",\n    \"detail\": \"The travel request is already in the requested status, no update was performed.\",\n    \"code\": \"travel_request_already_in_status\",\n    \"status\": 400\n}"
+							"key": "Host",
+							"value": "127.0.0.1:8035"
 						},
 						{
-							"name": "Successful - 200",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"status\": \"approved\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{apiUrl}}/admin/travel-requests/:code/status",
-									"host": [
-										"{{apiUrl}}"
-									],
-									"path": [
-										"admin",
-										"travel-requests",
-										":code",
-										"status"
-									],
-									"variable": [
-										{
-											"key": "code",
-											"value": "TVR-SJHJVTTGQ29D7"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": null,
-							"header": [
-								{
-									"key": "Host",
-									"value": "127.0.0.1:8035"
-								},
-								{
-									"key": "Connection",
-									"value": "close"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "PHP/8.4.12"
-								},
-								{
-									"key": "Cache-Control",
-									"value": "no-cache, private"
-								},
-								{
-									"key": "Date",
-									"value": "Sun, 14 Sep 2025 12:40:35 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "X-RateLimit-Limit",
-									"value": "10"
-								},
-								{
-									"key": "X-RateLimit-Remaining",
-									"value": "9"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": {\n        \"id\": \"0199465b-d6a1-7125-a780-74b1907eb633\",\n        \"code\": \"TVR-SJHJVTTGQ29D7\",\n        \"requester\": {\n            \"name\": \"Nome usuário\",\n            \"email\": \"mail@mail.com\"\n        },\n        \"destination\": \"São Paulo\",\n        \"departure_date\": \"2025-10-10T00:00:00.000000Z\",\n        \"return_date\": \"2025-10-20T00:00:00.000000Z\",\n        \"status\": \"approved\"\n    }\n}"
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.4.12"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Sep 2025 13:12:01 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/problem+json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "10"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "9"
 						}
-					]
+					],
+					"cookie": [],
+					"body": "{\n    \"title\": \"Status already set\",\n    \"detail\": \"The travel request is already in the requested status, no update was performed.\",\n    \"code\": \"travel_request_already_in_status\",\n    \"status\": 400\n}"
+				},
+				{
+					"name": "Successful - 200",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"approved\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/admin/travel-requests/:code/status",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"admin",
+								"travel-requests",
+								":code",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "code",
+									"value": "TVR-SJHJVTTGQ29D7"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8035"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.4.12"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 14 Sep 2025 12:40:35 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "10"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "9"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"id\": \"0199465b-d6a1-7125-a780-74b1907eb633\",\n        \"code\": \"TVR-SJHJVTTGQ29D7\",\n        \"requester\": {\n            \"name\": \"Nome usuário\",\n            \"email\": \"mail@mail.com\"\n        },\n        \"destination\": \"São Paulo\",\n        \"departure_date\": \"2025-10-10T00:00:00.000000Z\",\n        \"return_date\": \"2025-10-20T00:00:00.000000Z\",\n        \"status\": \"approved\"\n    }\n}"
 				}
 			]
 		}
