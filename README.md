@@ -38,8 +38,6 @@ Para criar um admin use o comando de: `php artisan app:create-admin`.
 
 A autenticação é via *bearer token* e após cadastrar um novo usuário, já estará disponível o mesmo na resposta.
 
-Importe a coleção do postman para fazer as requisições.
-
 Pronto, sua aplicação estará sendo executada por padrão na porta `8012`.
 
 Veja as seguintes variáveis no arquivo de `.env` de acordo com sua preferência de porta:

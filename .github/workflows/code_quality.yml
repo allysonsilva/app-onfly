@@ -10,22 +10,42 @@ on:
       - main
 
 jobs:
-    phpmd:
-      name: PHP Mess Detector
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout Code
-          uses: actions/checkout@v4
-          with:
-            ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
-            fetch-depth: 0  # a full history is required for pull request analysis
+  phpmd:
+    name: PHP Mess Detector
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
+          fetch-depth: 0  # a full history is required for pull request analysis
 
-        - name: Setup PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: ${{ matrix.php }}
-            coverage: none
-            tools: phpmd
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: phpmd
 
-        - name: Run PHP Mess Detector
-          run: phpmd app github phpmd.xml -v
+      - name: Run PHP Mess Detector
+        run: phpmd app github phpmd.xml -v
+
+  pint:
+    name: Laravel Pint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
+          fetch-depth: 0  # a full history is required for pull request analysis
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          coverage: none
+          tools: pint
+
+      - name: Run Laravel Pint
+        run: pint --test
