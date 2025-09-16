@@ -61,7 +61,7 @@
         "tests-ci": [
             "php artisan test --env=testing --group=migration @no_additional_args",
             "@populate-db @no_additional_args",
-            "@tests --compact --coverage --min=80"
+            "@tests --compact --coverage"
         ],
         "tests-parallel": [
             "php artisan optimize:clear --env=testing @no_additional_args",

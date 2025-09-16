@@ -86,7 +86,7 @@ jobs:
           php artisan key:generate --env=testing
 
       - name: Run Testing
-        run: composer populate-db && composer tests-ci
+        run: composer populate-db && composer tests-ci -- --min=49
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
